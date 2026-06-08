@@ -24,4 +24,5 @@ public class AdminController {
     public ResponseEntity<UserRegisterResponseDto> createAdmin(@Valid @RequestBody UserRegisterRequestDto request) {
         return adminService.registerAdmin(request);
     }
+
 }
