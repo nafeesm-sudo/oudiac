@@ -3,6 +3,8 @@ package com.app.oudiac.configs;
 
 
 import com.app.oudiac.models.enums.Role;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,9 +14,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import javax.crypto.SecretKey;
 import io.jsonwebtoken.security.MacAlgorithm;
 import io.jsonwebtoken.Jwts;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
+
+    @Value("${FRONT_END_URL}")
+    private String frontEndUrl;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,6 +43,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                .cors(cors->cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/api/admin/oudiac/**").hasRole(Role.ADMIN.name())
@@ -45,6 +56,33 @@ public class SecurityConfig {
                 .httpBasic(basic -> basic.disable()); // disable basic auth
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(
+                List.of(frontEndUrl)
+        );
+
+        configuration.setAllowedMethods(
+                List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        );
+
+        configuration.setAllowedHeaders(
+                List.of("*")
+        );
+
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }
 

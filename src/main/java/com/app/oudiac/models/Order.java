@@ -39,4 +39,8 @@ public class Order extends BaseModel{
     // 📌 Order status
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @ManyToOne
+    private Store store;
+
 }

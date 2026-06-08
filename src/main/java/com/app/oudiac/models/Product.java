@@ -13,6 +13,8 @@ import java.util.List;
 public class Product extends BaseModel{
     private String name;
     private String description;
+    private String imageUrl;
+    private String code;
 
     @ManyToOne
     private Brand brand;
@@ -27,4 +29,9 @@ public class Product extends BaseModel{
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "product",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    List<ProductVariant> productVariants;
 }

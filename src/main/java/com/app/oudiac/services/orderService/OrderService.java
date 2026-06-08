@@ -53,7 +53,7 @@ public class OrderService {
             item.setProduct(product);
             item.setQuantity(itemDTO.getQuantity());
 
-            BigDecimal price = product.getPrice(); // always from DB
+            BigDecimal price = product.getSellingPrice(); // always from DB
             item.setPrice(price);
 
             totalAmount =totalAmount.add(price.multiply(BigDecimal.valueOf(itemDTO.getQuantity())));
