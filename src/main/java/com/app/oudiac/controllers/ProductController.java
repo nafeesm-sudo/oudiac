@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
@@ -22,7 +24,11 @@ public class ProductController {
 
     @PostMapping(value = "/oudiac/add",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductResponseDto> addProduct(@Valid @ModelAttribute ProductRequestDto requestDto,@RequestParam("images") MultipartFile[] images){
-        return productService.addProduct(requestDto);
+        try{
+            return productService.addProduct(requestDto,images);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    start with getProducts with Pagination
