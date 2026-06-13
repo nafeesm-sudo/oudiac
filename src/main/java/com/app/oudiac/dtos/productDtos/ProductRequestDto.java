@@ -87,6 +87,10 @@ public class ProductRequestDto {
         newProductVariant.setVariantType(requestDto.getVariantType());
         newProductVariant.setStock(requestDto.getQuantity());
 
+        newProductVariant.setCreated_at(date);
+        newProductVariant.setUpdated_at(date);
+        newProductVariant.setIsDeleted(false);
+
         return newProductVariant;
     }
 }
