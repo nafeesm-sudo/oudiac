@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class AdminService {
     @Autowired
@@ -35,8 +38,36 @@ public class AdminService {
 
         otpService.sendOtp(user.getEmail());
 
-        UserRegisterResponseDto responseDto=new  UserRegisterResponseDto();
+        UserRegisterResponseDto responseDto= UserRegisterResponseDto.convertFromUser(newUser);
         responseDto.setMessage("Registration Successful");
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    public ResponseEntity<UserRegisterResponseDto> registerManager(UserRegisterRequestDto user) {
+        //Validation done
+        // Check if email already exists
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new UserAlreadyExitException("Email already in use");
+        }
+
+        User newUser=UserRegisterRequestDto.fromUserRegisterRequestDtoToUser(user);
+//        newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        newUser.setRole(Role.MANAGER);
+        userRepository.save(newUser);
+
+        otpService.sendOtp(user.getEmail());
+
+        UserRegisterResponseDto responseDto= UserRegisterResponseDto.convertFromUser(newUser);
+        responseDto.setMessage("Registration Successful");
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<UserRegisterResponseDto>> getManagers() {
+        List<User> users=userRepository.findAll();
+        List<UserRegisterResponseDto> response=new ArrayList<>();
+        for(User user:users){
+            response.add(UserRegisterResponseDto.convertFromUser(user));
+        }
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }

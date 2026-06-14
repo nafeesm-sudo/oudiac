@@ -97,15 +97,15 @@ public class ProductService implements IProductService{
 
         productVariantRepository.save(newProductVariant);
 
-        ProductResponseDto responseDto=ProductResponseDto.fromProductToProductResponseDto(newProduct);
+        ProductResponseDto responseDto=ProductResponseDto.fromProductToProductResponseDto(newProductVariant);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @Override
-    public Page<Product> getProducts(Integer page, Integer size) {
-        Page<Product> productPage = productRepository.findAll(PageRequest.of(page, size));
-        return productPage;
+    public Page<ProductResponseDto> getProducts(Integer page, Integer size) {
+        Page<ProductVariant> productPage = productVariantRepository.findAll(PageRequest.of(page, size));
+        return productPage.map(ProductResponseDto::fromProductToProductResponseDto);
     }
 
     public String getProductCode(String sku) {

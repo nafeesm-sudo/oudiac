@@ -7,10 +7,9 @@ import com.app.oudiac.services.userService.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -20,9 +19,18 @@ public class AdminController {
     private AdminService adminService;
 
     // Create Admin
-    @PostMapping("/register")   //This mapping is for loging and signup both
+    @PostMapping("/oudiac/register-admin")   //This mapping is for loging and signup both
     public ResponseEntity<UserRegisterResponseDto> createAdmin(@Valid @RequestBody UserRegisterRequestDto request) {
         return adminService.registerAdmin(request);
+    }
+    @PostMapping("/oudiac/register-manager")   //This mapping is for loging and signup both
+    public ResponseEntity<UserRegisterResponseDto> createManager(@Valid @RequestBody UserRegisterRequestDto request) {
+        return adminService.registerManager(request);
+    }
+
+    @GetMapping("/oudiac/get-managers")
+    public ResponseEntity<List<UserRegisterResponseDto>> getManager() {
+        return adminService.getManagers();
     }
 
 }

@@ -12,5 +12,5 @@ import java.io.IOException;
 public interface IProductService {
     ResponseEntity<ProductResponseDto> addProduct(ProductRequestDto requestDto, MultipartFile[] files) throws IOException;
 
-    Page<Product> getProducts(Integer page, Integer size);
+    Page<ProductResponseDto> getProducts(Integer page, Integer size);
 }

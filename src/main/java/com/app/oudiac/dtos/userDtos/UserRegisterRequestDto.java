@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class UserRegisterRequestDto {
 
@@ -31,7 +33,10 @@ public class UserRegisterRequestDto {
 
 //    @NotBlank(message = "role is required")
 //    private Role role;
-
+//    name: "",
+//    email: "",
+//    phone: "",
+//    password: "",
 
 
     public static User fromUserRegisterRequestDtoToUser(UserRegisterRequestDto requestDto){
@@ -40,6 +45,10 @@ public class UserRegisterRequestDto {
         user.setName(requestDto.getName());
         user.setMobileNumber(requestDto.getMobileNumber());
 //        user.setRole(requestDto.getRole());
+
+        user.setCreated_at(new Date());
+        user.setUpdated_at(new Date());
+        user.setIsDeleted(false);
         return user;
     }
 

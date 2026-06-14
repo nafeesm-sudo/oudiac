@@ -32,9 +32,13 @@ public class ProductController {
     }
 
 //    start with getProducts with Pagination
-    @GetMapping("/getAllProducts")
-    public Page<Product> getProducts(@RequestParam(defaultValue = "0") int page,
+    @GetMapping("/oudiac/get-products")
+    public Page<ProductResponseDto> getProducts(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "5") int size){
         return productService.getProducts(page,size);
     }
+//    @GetMapping("/oudiac/getall")
+//    public Page<Product> getAllProducts(){
+//        return productService.getAllProducts();
+//    }
 }
